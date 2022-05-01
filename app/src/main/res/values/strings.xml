@@ -3,4 +3,14 @@
     <string name="curiosity">Curiosity</string>
     <string name="opportunity">Opportunity</string>
     <string name="spirit">Spirit</string>
+    <string name="filter">Filter by camera</string>
+    <string name="camera_fhaz">Front Hazard Avoidance Camera</string>
+    <string name="camera_rhaz">Rear Hazard Avoidance Camera</string>
+    <string name="camera_mast">Mast Camera</string>
+    <string name="camera_chemcam">Chemistry and Camera Complex</string>
+    <string name="camera_mahli">Mars Hand Lens Imager</string>
+    <string name="camera_mardi">Mars Descent Imager</string>
+    <string name="camera_navcam">Navigation Camera</string>
+    <string name="camera_pancam">Panoramic Camera</string>
+    <string name="camera_minites">Miniature Thermal Emission Spectrometer (Mini-TES)</string>
 </resources>

@@ -1,9 +1,7 @@
 package com.mehmetpeker.nasaroverproject.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mehmetpeker.nasaroverproject.R
@@ -18,7 +16,17 @@ class CuriosityFragment : BaseFragment<FragmentCuriosityBinding>(FragmentCuriosi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_curiosity,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
 
