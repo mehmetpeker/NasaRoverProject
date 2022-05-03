@@ -1,10 +1,18 @@
 package com.mehmetpeker.nasaroverproject.api
 
+import com.mehmetpeker.nasaroverproject.data.model.RoverPhotoResponseModel
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiService {
-    //https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY&page=1
-    @GET("rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY")
-    fun getCuriosityRoverPhoto(@Query(value = "page") page:Int){}
+
+    @GET("rovers/{rover}/photos")
+    @JvmSuppressWildcards
+    suspend fun getRoverPhotoByName(@Path("rover") rover:String,
+                                    @QueryMap map : Map<String, Any>)
+    :Response<RoverPhotoResponseModel>
+
 }

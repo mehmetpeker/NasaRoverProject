@@ -13,4 +13,7 @@
     <string name="camera_navcam">Navigation Camera</string>
     <string name="camera_pancam">Panoramic Camera</string>
     <string name="camera_minites">Miniature Thermal Emission Spectrometer (Mini-TES)</string>
+    <string name="tap_to_retry">Tap to Retry</string>
+    <string name="some_error_occured">Some Error Occurred</string>
+    <string name="camera_default">Default</string>
 </resources>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/item_camera_default"
+        android:title="@string/camera_default"/>
+    <item
         android:id="@+id/item_camera_fhaz"
         android:title="@string/camera_fhaz"/>
     <item
