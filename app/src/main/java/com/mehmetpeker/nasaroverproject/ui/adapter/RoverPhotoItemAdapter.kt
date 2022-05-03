@@ -29,7 +29,6 @@ class RoverPhotoItemAdapter(
         Glide.with(holder.binding.imageviewRover.context)
             .load(imageLink)
             .into(holder.binding.imageviewRover)
-        holder.binding.tvIndex.text = position.toString()
         holder.binding.root.setOnClickListener { onItemClick(item) }
     }
 

@@ -16,4 +16,10 @@
     <string name="tap_to_retry">Tap to Retry</string>
     <string name="some_error_occured">Some Error Occurred</string>
     <string name="camera_default">Default</string>
+    <string name="earth_date">Earth Date</string>
+    <string name="rover_name">Rover Name</string>
+    <string name="camera">Camera</string>
+    <string name="status">Status</string>
+    <string name="launch_date">Launch Date</string>
+    <string name="landing_date">Landing Date</string>
 </resources>

@@ -19,7 +19,7 @@ class SpiritViewModel @Inject constructor(private val nasaRoverRepository: NasaR
     ViewModel() {
     private val roverName = "spirit"
     var selectedCamera = Constants.CAMERA_DEFAULT
-    fun getSpirithoto(): Flow<PagingData<Photo>> {
+    fun getSpiritPhoto(): Flow<PagingData<Photo>> {
         return Pager(PagingConfig(RoverPagingSource.ITEMS_PER_PAGE)) {
             nasaRoverRepository.getRoverPagingSource(
                 roverName,

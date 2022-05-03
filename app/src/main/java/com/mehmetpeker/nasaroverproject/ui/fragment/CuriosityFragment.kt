@@ -6,21 +6,18 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mehmetpeker.nasaroverproject.R
 import com.mehmetpeker.nasaroverproject.base.BaseFragment
 import com.mehmetpeker.nasaroverproject.data.model.Photo
-import com.mehmetpeker.nasaroverproject.data.model.RoverPhotoResponseModel
 import com.mehmetpeker.nasaroverproject.databinding.FragmentCuriosityBinding
 import com.mehmetpeker.nasaroverproject.ui.CuriosityViewModel
 import com.mehmetpeker.nasaroverproject.ui.adapter.PhotoLoadStateAdapter
 import com.mehmetpeker.nasaroverproject.ui.adapter.RoverPhotoItemAdapter
+import com.mehmetpeker.nasaroverproject.ui.dialog.RoverPopupDialog
 import com.mehmetpeker.nasaroverproject.util.Constants
-import com.mehmetpeker.nasaroverproject.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,34 +47,36 @@ class CuriosityFragment :
         }
 
         binding.rvCuriosity.layoutManager = LinearLayoutManager(requireContext())
-
         binding.rvCuriosity.adapter = adapter?.withLoadStateHeaderAndFooter(
             header = PhotoLoadStateAdapter { adapter?.retry() },
             footer = PhotoLoadStateAdapter { adapter?.retry() }
         )
     }
 
-    private fun setupPhotoList(camera: String = Constants.CAMERA_DEFAULT) {
+    private fun setupPhotoList() {
         lifecycleScope.launchWhenStarted{
-            curiosityViewModel.getCuriosityPhoto(camera).collectLatest {
+            curiosityViewModel.getCuriosityPhoto().collectLatest {
                 adapter?.submitData(it)
             }
         }
 
     }
 
-    private fun filterByCamera(camera: String) {
-        adapter?.refresh()
+    private fun filterByCamera() {
+
         lifecycleScope.launch {
-            curiosityViewModel.getCuriosityPhoto(camera).collectLatest {
-                Log.d("CustomLog",it.toString())
+            curiosityViewModel.getCuriosityPhoto().collectLatest {
+                adapter?.refresh()
                 adapter?.submitData(it)
+                if (adapter?.itemCount!! > 0)
+                    adapter?.peek(0)
             }
         }
     }
 
     private fun showPopupDialog(photo: Photo) {
-
+            val dialog = RoverPopupDialog(requireActivity(),photo)
+            dialog.showDialog()
     }
 
     private fun changeSelectedCamera(camera:String){
@@ -102,7 +101,7 @@ class CuriosityFragment :
         if (curiosityViewModel.selectedCamera == type)
             return false
         changeSelectedCamera(camera = type)
-        filterByCamera(type)
+        filterByCamera()
         return true
 
     }

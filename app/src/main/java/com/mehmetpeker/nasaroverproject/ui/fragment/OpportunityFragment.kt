@@ -15,8 +15,11 @@ import com.mehmetpeker.nasaroverproject.databinding.FragmentOpportunityBinding
 import com.mehmetpeker.nasaroverproject.ui.OpportunityViewModel
 import com.mehmetpeker.nasaroverproject.ui.adapter.PhotoLoadStateAdapter
 import com.mehmetpeker.nasaroverproject.ui.adapter.RoverPhotoItemAdapter
+import com.mehmetpeker.nasaroverproject.ui.dialog.RoverPopupDialog
+import com.mehmetpeker.nasaroverproject.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OpportunityFragment : BaseFragment<FragmentOpportunityBinding>(FragmentOpportunityBinding::inflate) {
@@ -24,45 +27,55 @@ class OpportunityFragment : BaseFragment<FragmentOpportunityBinding>(FragmentOpp
     private val opportunityViewModel:OpportunityViewModel by viewModels()
     private var adapter:RoverPhotoItemAdapter? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         setupRecyclerView()
         setupPhotoList()
 
-    }
-    private fun setupRecyclerView() {
-        if(adapter == null){
-            adapter = RoverPhotoItemAdapter {
 
+    }
+
+    private fun setupRecyclerView() {
+        if (adapter == null) {
+            adapter = RoverPhotoItemAdapter {
+                showPopupDialog(it)
             }
         }
+
         binding.rvOpportunity.layoutManager = LinearLayoutManager(requireContext())
         binding.rvOpportunity.adapter = adapter?.withLoadStateHeaderAndFooter(
             header = PhotoLoadStateAdapter { adapter?.retry() },
             footer = PhotoLoadStateAdapter { adapter?.retry() }
         )
     }
-    private fun setupPhotoList(){
-        lifecycleScope.launchWhenStarted {
+
+    private fun setupPhotoList() {
+        lifecycleScope.launchWhenStarted{
             opportunityViewModel.getOpportunityPhoto().collectLatest {
                 adapter?.submitData(it)
             }
         }
-    }
-    private fun filterByCamera(){
 
+    }
+
+    private fun filterByCamera() {
+
+        lifecycleScope.launch {
+            opportunityViewModel.getOpportunityPhoto().collectLatest {
+                adapter?.refresh()
+                adapter?.submitData(it)
+                if (adapter?.itemCount!! > 0)
+                adapter?.peek(0)
+            }
+        }
     }
 
     private fun showPopupDialog(photo: Photo) {
-
+        val dialog = RoverPopupDialog(requireActivity(),photo)
+        dialog.showDialog()
     }
 
-    private fun showProgressDialog() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressDialog() {
-        binding.progressBar.visibility = View.GONE
+    private fun changeSelectedCamera(camera:String){
+        opportunityViewModel.selectedCamera = camera
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_opprtunity,menu)
@@ -70,7 +83,20 @@ class OpportunityFragment : BaseFragment<FragmentOpportunityBinding>(FragmentOpp
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+
+        val type = when (item.itemId) {
+            R.id.item_camera_fhaz -> Constants.CAMERA_FHAZ
+            R.id.item_camera_rhaz -> Constants.CAMERA_RHAZ
+            R.id.item_camera_navcam -> Constants.CAMERA_NAVCAM
+            R.id.item_camera_pancam -> Constants.CAMERA_PANCAM
+            R.id.item_camera_minites -> Constants.CAMERA_MINITES
+            else -> Constants.CAMERA_DEFAULT
+        }
+        if (opportunityViewModel.selectedCamera == type)
+            return false
+        changeSelectedCamera(camera = type)
+        filterByCamera()
+        return true
     }
 
 }

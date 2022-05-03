@@ -15,8 +15,11 @@ import com.mehmetpeker.nasaroverproject.databinding.FragmentSpiritBinding
 import com.mehmetpeker.nasaroverproject.ui.SpiritViewModel
 import com.mehmetpeker.nasaroverproject.ui.adapter.PhotoLoadStateAdapter
 import com.mehmetpeker.nasaroverproject.ui.adapter.RoverPhotoItemAdapter
+import com.mehmetpeker.nasaroverproject.ui.dialog.RoverPopupDialog
+import com.mehmetpeker.nasaroverproject.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SpiritFragment : BaseFragment<FragmentSpiritBinding>(FragmentSpiritBinding::inflate) {
@@ -32,7 +35,7 @@ class SpiritFragment : BaseFragment<FragmentSpiritBinding>(FragmentSpiritBinding
     private fun setupRecyclerView() {
         if(adapter == null){
             adapter = RoverPhotoItemAdapter {
-
+                showPopupDialog(it)
             }
         }
         binding.rvSpirit.layoutManager = LinearLayoutManager(requireContext())
@@ -43,25 +46,28 @@ class SpiritFragment : BaseFragment<FragmentSpiritBinding>(FragmentSpiritBinding
     }
     private fun setupPhotoList(){
         lifecycleScope.launchWhenStarted {
-            spiritViewModel.getSpirithoto().collectLatest {
+            spiritViewModel.getSpiritPhoto().collectLatest {
                 adapter?.submitData(it)
             }
         }
     }
-    private fun filterByCamera(){
+    private fun filterByCamera() {
 
+        lifecycleScope.launch {
+            spiritViewModel.getSpiritPhoto().collectLatest {
+                adapter?.refresh()
+                adapter?.submitData(it)
+                if (adapter?.itemCount!! > 0)
+                    adapter?.peek(0)
+            }
+        }
     }
-
     private fun showPopupDialog(photo: Photo) {
-
+        val dialog = RoverPopupDialog(requireActivity(),photo)
+        dialog.showDialog()
     }
-
-    private fun showProgressDialog() {
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressDialog() {
-        binding.progressBar.visibility = View.GONE
+    private fun changeSelectedCamera(camera:String){
+        spiritViewModel.selectedCamera = camera
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_spirit,menu)
@@ -69,7 +75,20 @@ class SpiritFragment : BaseFragment<FragmentSpiritBinding>(FragmentSpiritBinding
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+
+        val type = when (item.itemId) {
+            R.id.item_camera_fhaz -> Constants.CAMERA_FHAZ
+            R.id.item_camera_rhaz -> Constants.CAMERA_RHAZ
+            R.id.item_camera_navcam -> Constants.CAMERA_NAVCAM
+            R.id.item_camera_pancam -> Constants.CAMERA_PANCAM
+            R.id.item_camera_minites -> Constants.CAMERA_MINITES
+            else -> Constants.CAMERA_DEFAULT
+        }
+        if (spiritViewModel.selectedCamera == type)
+            return false
+        changeSelectedCamera(camera = type)
+        filterByCamera()
+        return true
     }
 
 }

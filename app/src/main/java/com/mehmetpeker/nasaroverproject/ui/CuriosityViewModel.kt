@@ -21,8 +21,7 @@ class CuriosityViewModel @Inject constructor(private val nasaRoverRepository: Na
     private val roverName = "curiosity"
     var selectedCamera = Constants.CAMERA_DEFAULT
 
-    fun getCuriosityPhoto(camera:String) : Flow<PagingData<Photo>> {
-        selectedCamera = camera
+    fun getCuriosityPhoto() : Flow<PagingData<Photo>> {
         return Pager(PagingConfig(ITEMS_PER_PAGE)) {
             nasaRoverRepository.getRoverPagingSource(
                 roverName,
