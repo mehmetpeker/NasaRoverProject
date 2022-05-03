@@ -1,7 +1,7 @@
 package com.mehmetpeker.nasaroverproject.util
 
 object Constants {
-    const val API_KEY = "WtkDNyQmxp6vhjAwhDUBX8J17jwCw5ewpVnkJiPL"
+    const val API_KEY = "DEMO_KEY"
     const val CAMERA_DEFAULT = ""
     const val CAMERA_FHAZ = "fhaz"
     const val CAMERA_RHAZ = "rhaz"
