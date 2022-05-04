@@ -34,5 +34,5 @@ An application that lists photos taken by rovers using NASA Open APIs.
 
 **Mehmet Peker**
 
-[![Linkedin](https://img.shields.io/badge/-linkedin-grey?logo=linkedin)](https://www.linkedin.com/in/mpekerdev/) 
+[![Linkedin](https://img.shields.io/badge/-linkedin-grey?logo=linkedin)](https://www.linkedin.com/in/mehmetpekerdev/) 
 
