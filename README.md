@@ -3,11 +3,13 @@
 An application that lists photos taken by rovers using NASA Open APIs.
 
 ## Screenshots
-![](https://github.com/mehmetpeker/NasaRoverProject/tree/master/screenshots/screenshot1.png)
-![](https://github.com/mehmetpeker/NasaRoverProject/tree/master/screenshots/screenshot2.png)
-![](https://github.com/mehmetpeker/NasaRoverProject/tree/master/screenshots/screenshot3.png)
-![](https://github.com/mehmetpeker/NasaRoverProject/tree/master/screenshots/ss.gif)
+<img src="https://github.com/mehmetpeker/NasaRoverProject/blob/master/screenshots/screenshot1.png" width="270" height="480">
+<img src="https://github.com/mehmetpeker/NasaRoverProject/blob/master/screenshots/screenshot2.png" width="270" height="480">
+<img src="https://github.com/mehmetpeker/NasaRoverProject/blob/master/screenshots/screenshot3.png" width="270" height="480">
 
+## GIF
+
+<img src="https://github.com/mehmetpeker/NasaRoverProject/blob/master/screenshots/ss.gif" width="270" height="480">
 
 ## Architecture
 
